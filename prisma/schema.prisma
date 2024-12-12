@@ -1,0 +1,55 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model ModulationSettings {
+  id           String             @id @default(uuid())
+  lfoId        Int
+  amount       Float
+  oscillatorId String
+  oscillator   OscillatorSettings @relation(fields: [oscillatorId], references: [id])
+}
+
+model OscillatorSettings {
+  id                 String               @id @default(uuid())
+  type               String
+  controllers        Float[]
+  modulationSettings ModulationSettings[]
+  controlSettingsId  String
+  controlSettings    ControlSettings      @relation(fields: [controlSettingsId], references: [id])
+}
+
+model ControlSettings {
+  id          String               @id @default(uuid())
+  oscillators OscillatorSettings[]
+  balance     Float
+  patch       Patch?               @relation
+}
+
+model LfoSettings {
+  id        String @id @default(uuid())
+  frequency Float
+  type      String
+  patchId   String
+  patch     Patch  @relation(fields: [patchId], references: [id])
+}
+
+model Patch {
+  id                 String          @id @default(uuid())
+  controllerValuesId String          @unique
+  controllerValues   ControlSettings @relation(fields: [controllerValuesId], references: [id])
+  lfoSettings        LfoSettings[]
+  appStates          AppState[]      @relation
+}
+
+model AppState {
+  id           String  @id @default(uuid())
+  showControls Boolean
+  patchId      String
+  patch        Patch   @relation(fields: [patchId], references: [id])
+}
