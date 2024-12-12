@@ -11,15 +11,16 @@ export const EffectsView = ({
 }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const controlSettingsRef = useRef(controlSettingsParm);
+    const { toggleShowControls } = useStore();
 
-	var cachedLfoValues: number[] = cacheLfoValues(0);
+	let cachedLfoValues: number[] = cacheLfoValues(0);
 
 	useEffect(() => {
 		console.log(
 			`EffectsView: controlSettings ${JSON.stringify(controlSettingsParm)}`,
 		);
 		controlSettingsRef.current = controlSettingsParm;
-	}, [controlSettingsParm]);
+	}, [controlSettingsParm, toggleShowControls]);
 
 	useEffect(() => {
         // Ensure the code only runs on the client side
@@ -484,7 +485,7 @@ export const EffectsView = ({
 			const g1 = getControllerValue(0, ControllerId.G);
 			const b1 = getControllerValue(0, ControllerId.B);
 			gl.uniform3f(color1Location, r1, g1, b1);
-			let controllerValue = getControllerValue(0, ControllerId.Freq);
+			const controllerValue = getControllerValue(0, ControllerId.Freq);
 			gl.uniform1f(freq1Location, controllerValue);
 			gl.uniform1f(
 				speed1Location,
@@ -583,8 +584,8 @@ export const EffectsView = ({
 	return (
 		<canvas
 			ref={canvasRef}
-			width={window.innerWidth}
-			height={window.innerHeight}
+            width={typeof window !== 'undefined' ? window.innerWidth : 0}
+            height={typeof window !== 'undefined' ? window.innerHeight : 0}
 		></canvas>
 	);
 };

@@ -169,7 +169,7 @@ const ModulationSettingsPanel = ({
 				>
 					<option value={-1}>LFO ?</option>
 					{patch.lfoSettings.map((lfoSetting) => (
-						<option value={lfoSetting.id}>
+						<option key={lfoSetting.id} value={lfoSetting.id}>
 							LFO {lfoSetting.id}
 						</option>
 					))}

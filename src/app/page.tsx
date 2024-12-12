@@ -26,7 +26,7 @@ export default function Home() {
 		return () => {
 			window.removeEventListener('keydown', handleKeyDown);
 		};
-	}, []);
+	}, [toggleShowControls]);
 
 	return (
 		<div className="flex-col w-full h-full">
