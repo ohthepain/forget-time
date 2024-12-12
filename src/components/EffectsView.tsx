@@ -11,7 +11,6 @@ export const EffectsView = ({
 }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const controlSettingsRef = useRef(controlSettingsParm);
-    const { toggleShowControls } = useStore();
 
 	let cachedLfoValues: number[] = cacheLfoValues(0);
 
@@ -20,7 +19,7 @@ export const EffectsView = ({
 			`EffectsView: controlSettings ${JSON.stringify(controlSettingsParm)}`,
 		);
 		controlSettingsRef.current = controlSettingsParm;
-	}, [controlSettingsParm, toggleShowControls]);
+	}, [controlSettingsParm]);
 
 	useEffect(() => {
         // Ensure the code only runs on the client side
@@ -33,13 +32,29 @@ export const EffectsView = ({
 			return;
 		}
 
+        // Set canvas dimensions
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
 		const gl = canvas.getContext('webgl');
 		if (!gl) {
 			console.error('WebGL not supported');
 			return;
 		}
 
-		function createShader(
+        // Texture creation function
+        const createTexture = (gl: WebGLRenderingContext, width: number, height: number) => {
+            const texture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            return texture;
+        };
+        
+        function createShader(
 			gl: WebGLRenderingContext,
 			type: number,
 			source: string,
@@ -99,7 +114,7 @@ export const EffectsView = ({
 			const framebuffer = gl.createFramebuffer();
 			gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
 
-			const texture = gl.createTexture();
+			const texture = createTexture(gl, canvas!.width, canvas!.height);
 			gl.bindTexture(gl.TEXTURE_2D, texture);
 			gl.texImage2D(
 				gl.TEXTURE_2D,
