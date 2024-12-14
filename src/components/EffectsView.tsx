@@ -475,6 +475,7 @@ export const EffectsView = ({
 				return;
 			}
 
+            // eslint-disable-next-line react-hooks/exhaustive-deps
 			cachedLfoValues = cacheLfoValues(time);
 
 			// Draw first program to framebuffer1
