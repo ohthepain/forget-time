@@ -1,3 +1,4 @@
+// app/page.tsx
 "use client";
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
@@ -15,7 +16,7 @@ const DynamicEffectsView = dynamic<{ controlSettingsParm: ControlSettings }>(
 );
 
 const Home = () => {
-    console.log(`ar ar ar mother ararar`);
+  console.log(`ar ar ar mother ararar`);
   const { showControls, toggleShowControls, patch } = useStore();
   const { data: session, status } = useSession();
 
@@ -60,4 +61,4 @@ const Home = () => {
   );
 };
 
-export default dynamic(() => Promise.resolve(Home), { ssr: false });
+export default Home;

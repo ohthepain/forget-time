@@ -1,33 +1,25 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+// app/layout.tsx
+"use client";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import { ReactNode } from 'react';
+import { SessionProvider } from 'next-auth/react';
+import '../styles/globals.css';
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+interface RootLayoutProps {
+  children: ReactNode;
+  session: any;
+}
 
-export const metadata: Metadata = {
-  title: "Forget Time",
-  description: "WebGL Shaders",
-};
+export default function RootLayout({ children, session }: RootLayoutProps) {
+  console.log('Rendering layout.tsx'); // Add this line to log when layout.tsx is rendered
+  console.log(`Session data: ${JSON.stringify(session)}`);
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body>
+        <SessionProvider session={session}>
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );

@@ -1,3 +1,4 @@
+"use client";
 import { useSession, signOut } from "next-auth/react";
 
 export default function Dashboard() {
@@ -7,7 +8,7 @@ export default function Dashboard() {
   if (loading) return <p>Loading...</p>;
 
   if (!session) {
-    return <p>You are not logged in. Please sign in.</p>;
+    return <p>Protected: You are not logged in. Please sign in.</p>;
   }
 
   return (
