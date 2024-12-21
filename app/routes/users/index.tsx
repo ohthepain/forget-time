@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { User } from "@prisma/client";
-import { getUsers } from "../../serverFunctions/users";
+import { getUsers, deleteUser } from "../../serverFunctions/users";
 
 export const UserList = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -22,7 +22,22 @@ export const UserList = () => {
       <h1>Users</h1>
       <ul>
         {users.map((user) => (
-          <li key={user.id}>{user.email}  {user.id}</li>
+          <li key={user.id}>
+            <div className="flex flex-row w-full bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+              <div className="flex flex-1">
+                <button
+                  onClick={async () => {
+                    await deleteUser({ data: user.id });
+                    setUsers(users.filter((u) => u.id !== user.id));
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+              <div className="flex flex-1">{user.email}</div>
+              <div className="flex flex-1">{user.id}</div>
+            </div>
+          </li>
         ))}
       </ul>
     </div>
