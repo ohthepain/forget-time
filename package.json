@@ -8,7 +8,9 @@
     "dev": "vinxi dev",
     "build": "vinxi build",
     "start": "vinxi start",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "lint": "eslint 'app/**/*.{js,ts,jsx,tsx}'",
+    "lint:fix": "eslint 'app/**/*.{js,ts,jsx,tsx}' --fix"
   },
   "keywords": [],
   "author": "",
@@ -25,15 +27,21 @@
     "vinxi": "^0.5.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.17.0",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "eslint": "^9.17.0",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "globals": "^15.14.0",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
     "prisma": "^6.1.0",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.1"
   }
 }

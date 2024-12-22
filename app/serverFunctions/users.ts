@@ -85,7 +85,6 @@ export const getUser = createServerFn({ method: "GET" })
     return userId;
   })
   .handler(async (context) => {
-    const userId = context.data;
     const prisma = new PrismaClient();
     const user = await prisma.user.findUnique({ where: { id: context.data } });
     return user;
@@ -102,7 +101,6 @@ export const deleteUser = createServerFn({ method: "POST" })
     return userId;
   })
   .handler(async (context) => {
-    const userId = context.data;
     const prisma = new PrismaClient();
     const user = await prisma.user.delete({ where: { id: context.data } });
     return user;
