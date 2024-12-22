@@ -1,0 +1,4 @@
+// filepath: /Users/paulwilkinson/projects/tanstack-start/tanstack-start-example/.prettierignore
+node_modules
+dist
+

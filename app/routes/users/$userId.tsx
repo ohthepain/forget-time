@@ -2,7 +2,6 @@ import { createFileRoute, useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { User } from "@prisma/client";
 import { getUser } from "../../serverFunctions/users";
-import { getRouterParam } from "vinxi/http";
 
 export const UserInfo = () => {
     const params = useParams({ from: '/users/$userId' })
@@ -20,10 +19,12 @@ export const UserInfo = () => {
   }, []);
 
   return (
-    <div>
-      <h1>User</h1>
-      <div>{user?.email || "no email"}</div>
-      <div>{user?.id || "no userId"}</div>
+    <div className="flex flex-col w-full p-4">
+      <div className="flex flex-row w-full mb-4">
+        <div className="flex flex-1 font-bold">User</div>
+        <div className="flex flex-1">{user?.email || "no email"}</div>
+        <div className="flex flex-1">{user?.id || "no userId"}</div>
+      </div>
     </div>
   );
 };
