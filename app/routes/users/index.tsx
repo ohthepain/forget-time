@@ -1,16 +1,16 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { User } from "@prisma/client";
-import { getUsers, deleteUser } from "../../serverFunctions/users";
+import { createFileRoute, redirect } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
+import { User } from '@prisma/client';
+import { getUsers, deleteUser } from '../../serverFunctions/users';
 
 export const UserList = () => {
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     const populateUsers = async () => {
-      console.log("populating users");
+      console.log('populating users');
       const users: User[] = await getUsers();
-      console.log("users", users);
+      console.log('users', users);
       setUsers(users);
     };
 
@@ -23,7 +23,7 @@ export const UserList = () => {
       <ul>
         {users.map((user) => (
           <li key={user.id}>
-            <div className="flex flex-row w-full bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+            <div className="flex w-full flex-row rounded-lg bg-gray-100 p-4 dark:bg-gray-800">
               <div className="flex flex-1">
                 <button
                   onClick={async () => {
@@ -44,6 +44,11 @@ export const UserList = () => {
   );
 };
 
-export const Route = createFileRoute("/users/")({
+export const Route = createFileRoute('/users/')({
   component: UserList,
+  beforeLoad: async ({ context }) => {
+    if (!context.user) {
+      throw redirect({ to: '/signin' });
+    }
+  },
 });

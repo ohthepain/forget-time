@@ -8,7 +8,8 @@
     "dev": "vinxi dev",
     "build": "vinxi build",
     "start": "vinxi start",
-    "prettier": "prettier --write .",
+    "prettier": "prettier .",
+    "prettier:fix": "prettier --write .",
     "lint": "eslint 'app/**/*.{js,ts,jsx,tsx}'",
     "lint:fix": "eslint 'app/**/*.{js,ts,jsx,tsx}' --fix"
   },
@@ -18,8 +19,11 @@
   "description": "",
   "dependencies": {
     "@prisma/client": "^6.1.0",
+    "@radix-ui/react-slot": "^1.1.1",
     "@tanstack/react-router": "^1.91.3",
+    "@tanstack/router-devtools": "^1.92.1",
     "@tanstack/start": "^1.91.3",
+    "arctic": "^2.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^2.5.5",

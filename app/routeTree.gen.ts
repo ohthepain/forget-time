@@ -10,13 +10,14 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as SignupImport } from './routes/signup'
-import { Route as ServerTimeImport } from './routes/serverTime'
-import { Route as AboutImport } from './routes/about'
-import { Route as IndexImport } from './routes/index'
-import { Route as UsersIndexImport } from './routes/users/index'
-import { Route as UsersUserIdImport } from './routes/users/$userId'
+import { Route as rootRoute } from './routes/__root';
+import { Route as SignupImport } from './routes/signup';
+import { Route as SigninImport } from './routes/signin';
+import { Route as ServerTimeImport } from './routes/serverTime';
+import { Route as AboutImport } from './routes/about';
+import { Route as IndexImport } from './routes/index';
+import { Route as UsersIndexImport } from './routes/users/index';
+import { Route as UsersUserIdImport } from './routes/users/$userId';
 
 // Create/Update Routes
 
@@ -24,160 +25,187 @@ const SignupRoute = SignupImport.update({
   id: '/signup',
   path: '/signup',
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
+
+const SigninRoute = SigninImport.update({
+  id: '/signin',
+  path: '/signin',
+  getParentRoute: () => rootRoute,
+} as any);
 
 const ServerTimeRoute = ServerTimeImport.update({
   id: '/serverTime',
   path: '/serverTime',
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const AboutRoute = AboutImport.update({
   id: '/about',
   path: '/about',
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const UsersIndexRoute = UsersIndexImport.update({
   id: '/users/',
   path: '/users/',
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const UsersUserIdRoute = UsersUserIdImport.update({
   id: '/users/$userId',
   path: '/users/$userId',
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
+      id: '/';
+      path: '/';
+      fullPath: '/';
+      preLoaderRoute: typeof IndexImport;
+      parentRoute: typeof rootRoute;
+    };
     '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
-      parentRoute: typeof rootRoute
-    }
+      id: '/about';
+      path: '/about';
+      fullPath: '/about';
+      preLoaderRoute: typeof AboutImport;
+      parentRoute: typeof rootRoute;
+    };
     '/serverTime': {
-      id: '/serverTime'
-      path: '/serverTime'
-      fullPath: '/serverTime'
-      preLoaderRoute: typeof ServerTimeImport
-      parentRoute: typeof rootRoute
-    }
+      id: '/serverTime';
+      path: '/serverTime';
+      fullPath: '/serverTime';
+      preLoaderRoute: typeof ServerTimeImport;
+      parentRoute: typeof rootRoute;
+    };
+    '/signin': {
+      id: '/signin';
+      path: '/signin';
+      fullPath: '/signin';
+      preLoaderRoute: typeof SigninImport;
+      parentRoute: typeof rootRoute;
+    };
     '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupImport
-      parentRoute: typeof rootRoute
-    }
+      id: '/signup';
+      path: '/signup';
+      fullPath: '/signup';
+      preLoaderRoute: typeof SignupImport;
+      parentRoute: typeof rootRoute;
+    };
     '/users/$userId': {
-      id: '/users/$userId'
-      path: '/users/$userId'
-      fullPath: '/users/$userId'
-      preLoaderRoute: typeof UsersUserIdImport
-      parentRoute: typeof rootRoute
-    }
+      id: '/users/$userId';
+      path: '/users/$userId';
+      fullPath: '/users/$userId';
+      preLoaderRoute: typeof UsersUserIdImport;
+      parentRoute: typeof rootRoute;
+    };
     '/users/': {
-      id: '/users/'
-      path: '/users'
-      fullPath: '/users'
-      preLoaderRoute: typeof UsersIndexImport
-      parentRoute: typeof rootRoute
-    }
+      id: '/users/';
+      path: '/users';
+      fullPath: '/users';
+      preLoaderRoute: typeof UsersIndexImport;
+      parentRoute: typeof rootRoute;
+    };
   }
 }
 
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/serverTime': typeof ServerTimeRoute
-  '/signup': typeof SignupRoute
-  '/users/$userId': typeof UsersUserIdRoute
-  '/users': typeof UsersIndexRoute
+  '/': typeof IndexRoute;
+  '/about': typeof AboutRoute;
+  '/serverTime': typeof ServerTimeRoute;
+  '/signin': typeof SigninRoute;
+  '/signup': typeof SignupRoute;
+  '/users/$userId': typeof UsersUserIdRoute;
+  '/users': typeof UsersIndexRoute;
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/serverTime': typeof ServerTimeRoute
-  '/signup': typeof SignupRoute
-  '/users/$userId': typeof UsersUserIdRoute
-  '/users': typeof UsersIndexRoute
+  '/': typeof IndexRoute;
+  '/about': typeof AboutRoute;
+  '/serverTime': typeof ServerTimeRoute;
+  '/signin': typeof SigninRoute;
+  '/signup': typeof SignupRoute;
+  '/users/$userId': typeof UsersUserIdRoute;
+  '/users': typeof UsersIndexRoute;
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/serverTime': typeof ServerTimeRoute
-  '/signup': typeof SignupRoute
-  '/users/$userId': typeof UsersUserIdRoute
-  '/users/': typeof UsersIndexRoute
+  __root__: typeof rootRoute;
+  '/': typeof IndexRoute;
+  '/about': typeof AboutRoute;
+  '/serverTime': typeof ServerTimeRoute;
+  '/signin': typeof SigninRoute;
+  '/signup': typeof SignupRoute;
+  '/users/$userId': typeof UsersUserIdRoute;
+  '/users/': typeof UsersIndexRoute;
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
     | '/'
     | '/about'
     | '/serverTime'
+    | '/signin'
     | '/signup'
     | '/users/$userId'
-    | '/users'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/serverTime' | '/signup' | '/users/$userId' | '/users'
+    | '/users';
+  fileRoutesByTo: FileRoutesByTo;
+  to:
+    | '/'
+    | '/about'
+    | '/serverTime'
+    | '/signin'
+    | '/signup'
+    | '/users/$userId'
+    | '/users';
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/serverTime'
+    | '/signin'
     | '/signup'
     | '/users/$userId'
-    | '/users/'
-  fileRoutesById: FileRoutesById
+    | '/users/';
+  fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
-  ServerTimeRoute: typeof ServerTimeRoute
-  SignupRoute: typeof SignupRoute
-  UsersUserIdRoute: typeof UsersUserIdRoute
-  UsersIndexRoute: typeof UsersIndexRoute
+  IndexRoute: typeof IndexRoute;
+  AboutRoute: typeof AboutRoute;
+  ServerTimeRoute: typeof ServerTimeRoute;
+  SigninRoute: typeof SigninRoute;
+  SignupRoute: typeof SignupRoute;
+  UsersUserIdRoute: typeof UsersUserIdRoute;
+  UsersIndexRoute: typeof UsersIndexRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ServerTimeRoute: ServerTimeRoute,
+  SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
   UsersUserIdRoute: UsersUserIdRoute,
   UsersIndexRoute: UsersIndexRoute,
-}
+};
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
 /* ROUTE_MANIFEST_START
 {
@@ -188,6 +216,7 @@ export const routeTree = rootRoute
         "/",
         "/about",
         "/serverTime",
+        "/signin",
         "/signup",
         "/users/$userId",
         "/users/"
@@ -201,6 +230,9 @@ export const routeTree = rootRoute
     },
     "/serverTime": {
       "filePath": "serverTime.tsx"
+    },
+    "/signin": {
+      "filePath": "signin.tsx"
     },
     "/signup": {
       "filePath": "signup.tsx"

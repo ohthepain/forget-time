@@ -1,100 +1,110 @@
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 model User {
-    id        String     @id @default(uuid())
-    email     String     @unique
-    password  String
-    name      String?
-    createdAt DateTime   @default(now())
-    updatedAt DateTime   @updatedAt
-    patches   Patch[]
-    accounts  Account[]
-    appState  AppState[]
-    sessions  Session[]
+  id           String         @id @default(uuid())
+  email        String?        @unique
+  password     String
+  name         String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  patches      Patch[]
+  accounts     Account[]
+  appState     AppState[]
+  sessions     Session[]
+  OAuthAccount OAuthAccount[]
 }
 
 model Account {
-    id                 String    @id @default(cuid())
-    userId             String
-    providerType       String
-    providerId         String
-    providerAccountId  String
-    refreshToken       String?   @db.Text
-    accessToken        String?   @db.Text
-    accessTokenExpires DateTime?
-    user               User      @relation(fields: [userId], references: [id])
+  id                 String    @id @default(cuid())
+  userId             String
+  providerType       String
+  providerId         String
+  providerAccountId  String
+  refreshToken       String?   @db.Text
+  accessToken        String?   @db.Text
+  accessTokenExpires DateTime?
+  user               User      @relation(fields: [userId], references: [id])
+}
+
+model OAuthAccount {
+  providerId     String
+  providerUserId String
+  userId         String
+  user           User   @relation(fields: [userId], references: [id])
+
+  @@id([providerId, providerUserId])
 }
 
 model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id])
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id])
 }
 
 model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
+  identifier String
+  token      String   @unique
+  expires    DateTime
 
-    @@unique([identifier, token])
+  @@unique([identifier, token])
 }
 
 model ModulationSettings {
-    id           String             @id @default(uuid())
-    lfoId        Int
-    amount       Float
-    oscillatorId String
-    oscillator   OscillatorSettings @relation(fields: [oscillatorId], references: [id])
+  id           String             @id @default(uuid())
+  lfoId        Int
+  amount       Float
+  oscillatorId String
+  oscillator   OscillatorSettings @relation(fields: [oscillatorId], references: [id])
 }
 
 model OscillatorSettings {
-    id                 String               @id @default(uuid())
-    type               String
-    controllers        Float[]
-    modulationSettings ModulationSettings[]
-    controlSettingsId  String
-    controlSettings    ControlSettings      @relation(fields: [controlSettingsId], references: [id])
+  id                 String               @id @default(uuid())
+  type               String
+  controllers        Float[]
+  modulationSettings ModulationSettings[]
+  controlSettingsId  String
+  controlSettings    ControlSettings      @relation(fields: [controlSettingsId], references: [id])
 }
 
 model ControlSettings {
-    id          String               @id @default(uuid())
-    oscillators OscillatorSettings[]
-    balance     Float
-    patch       Patch?               @relation
+  id          String               @id @default(uuid())
+  oscillators OscillatorSettings[]
+  balance     Float
+  patch       Patch?               @relation
 }
 
 model LfoSettings {
-    id        String @id @default(uuid())
-    frequency Float
-    type      String
-    patchId   String
-    patch     Patch  @relation(fields: [patchId], references: [id])
+  id        String @id @default(uuid())
+  frequency Float
+  type      String
+  patchId   String
+  patch     Patch  @relation(fields: [patchId], references: [id])
 }
 
 model Patch {
-    id                 String          @id @default(uuid())
-    controllerValuesId String          @unique
-    controllerValues   ControlSettings @relation(fields: [controllerValuesId], references: [id])
-    userId             String
-    user               User            @relation(fields: [userId], references: [id])
-    lfoSettings        LfoSettings[]
-    appStates          AppState[]      @relation
+  id                 String          @id @default(uuid())
+  controllerValuesId String          @unique
+  controllerValues   ControlSettings @relation(fields: [controllerValuesId], references: [id])
+  userId             String
+  user               User            @relation(fields: [userId], references: [id])
+  lfoSettings        LfoSettings[]
+  appStates          AppState[]      @relation
 }
 
 model AppState {
-    id           String  @id @default(uuid())
-    userId       String
-    user         User    @relation(fields: [userId], references: [id])
-    showControls Boolean
-    patchId      String
-    patch        Patch   @relation(fields: [patchId], references: [id])
+  id           String  @id @default(uuid())
+  userId       String
+  user         User    @relation(fields: [userId], references: [id])
+  showControls Boolean
+  patchId      String
+  patch        Patch   @relation(fields: [patchId], references: [id])
 }

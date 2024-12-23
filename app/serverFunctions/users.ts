@@ -1,8 +1,8 @@
-import { createServerFn } from "@tanstack/start";
-import { redirect } from "@tanstack/react-router";
-import { PrismaClient, User } from "@prisma/client";
-import { hashPassword } from "../utils/prisma";
-import { useAppSession } from "../utils/session";
+import { createServerFn } from '@tanstack/start';
+import { redirect } from '@tanstack/react-router';
+import { PrismaClient, User } from '@prisma/client';
+import { hashPassword } from '../utils/prisma';
+import { useAppSession } from '../utils/session';
 
 export const signupFn = createServerFn()
   .validator(
@@ -11,7 +11,7 @@ export const signupFn = createServerFn()
         email: string;
         password: string;
         redirectUrl?: string;
-      }
+      },
   )
   .handler(async ({ data }) => {
     const prismaClient = new PrismaClient();
@@ -34,7 +34,7 @@ export const signupFn = createServerFn()
         return {
           error: true,
           userExists: true,
-          message: "User already exists",
+          message: 'User already exists',
         };
       }
 
@@ -45,7 +45,7 @@ export const signupFn = createServerFn()
 
       // Redirect to the prev page stored in the "redirect" search param
       throw redirect({
-        href: data.redirectUrl || "/",
+        href: data.redirectUrl || '/',
       });
     }
 
@@ -64,23 +64,23 @@ export const signupFn = createServerFn()
 
     // Redirect to the prev page stored in the "redirect" search param
     throw redirect({
-      href: data.redirectUrl || "/",
+      href: data.redirectUrl || '/',
     });
   });
 
-export const getUsers = createServerFn({ method: "GET" }).handler(async () => {
+export const getUsers = createServerFn({ method: 'GET' }).handler(async () => {
   const prisma = new PrismaClient();
   const users: User[] = await prisma.user.findMany();
   return users;
 });
 
-export const getUser = createServerFn({ method: "GET" })
+export const getUser = createServerFn({ method: 'GET' })
   .validator((userId: string): string => {
-    if (typeof userId !== "string" || userId === null) {
-      throw new Error("userId must be a string");
+    if (typeof userId !== 'string' || userId === null) {
+      throw new Error('userId must be a string');
     }
     if (userId.length <= 8) {
-      throw new Error("userId must have at least 8 characters");
+      throw new Error('userId must have at least 8 characters');
     }
     return userId;
   })
@@ -90,13 +90,13 @@ export const getUser = createServerFn({ method: "GET" })
     return user;
   });
 
-export const deleteUser = createServerFn({ method: "POST" })
+export const deleteUser = createServerFn({ method: 'POST' })
   .validator((userId: string): string => {
-    if (typeof userId !== "string" || userId === null) {
-      throw new Error("userId must be a string");
+    if (typeof userId !== 'string' || userId === null) {
+      throw new Error('userId must be a string');
     }
     if (userId.length <= 8) {
-      throw new Error("userId must have at least 8 characters");
+      throw new Error('userId must have at least 8 characters');
     }
     return userId;
   })
