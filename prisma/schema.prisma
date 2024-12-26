@@ -7,10 +7,33 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum OscType {
+  CUSTOM
+  SINE
+  SQUARE
+  TRIANGLE
+  SAWTOOTH
+}
+
+enum LfoType {
+  SINE
+  SQUARE
+  TRIANGLE
+  SAWTOOTH
+}
+
+enum OscillatorType {
+  CUSTOM
+  SINE
+  SQUARE
+  TRIANGLE
+  SAWTOOTH
+}
+
 model User {
   id           String         @id @default(uuid())
   email        String?        @unique
-  password     String
+  password     String?
   name         String?
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
@@ -60,7 +83,7 @@ model VerificationToken {
 
 model ModulationSettings {
   id           String             @id @default(uuid())
-  lfoId        Int
+  lfoId        LfoType
   amount       Float
   oscillatorId String
   oscillator   OscillatorSettings @relation(fields: [oscillatorId], references: [id])
@@ -68,7 +91,7 @@ model ModulationSettings {
 
 model OscillatorSettings {
   id                 String               @id @default(uuid())
-  type               String
+  type               LfoType
   controllers        Float[]
   modulationSettings ModulationSettings[]
   controlSettingsId  String
@@ -85,7 +108,7 @@ model ControlSettings {
 model LfoSettings {
   id        String @id @default(uuid())
   frequency Float
-  type      String
+  type      LfoType
   patchId   String
   patch     Patch  @relation(fields: [patchId], references: [id])
 }

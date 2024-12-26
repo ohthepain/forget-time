@@ -2,6 +2,7 @@
 import * as fs from 'node:fs';
 import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { createServerFn } from '@tanstack/start';
+import { Button } from '../components/Button';
 
 const filePath = 'count.txt';
 
@@ -35,9 +36,10 @@ function Home() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
-      <button
-        className="flex h-12 w-32 items-center justify-center rounded-lg bg-primary"
+      <Button
+        className="flex h-12 w-32 items-center gap-8 justify-center rounded-lg bg-primary m-4"
         type="button"
+        variant="outline"
         onClick={() => {
           updateCount({ data: 1 }).then(() => {
             router.invalidate();
@@ -45,8 +47,8 @@ function Home() {
         }}
       >
         Add 1 to {state}?
-      </button>
-      <div className="flex flex-col items-center gap-8 rounded-xl border bg-card bg-pink-100 p-10">
+      </Button>
+      <div className="flex flex-col items-center gap-2 rounded-xl border bg-card p-10 shadow-lg">
         <a
           className="flex text-muted-foreground underline hover:text-foreground"
           href="https://github.com/ohthepain/forget-time"
@@ -56,19 +58,19 @@ function Home() {
           ohthepain/forget-time
         </a>
         <form method="POST" action="/users">
-          <button type="submit" className="w-fit">
+          <Button type="submit" className="w-fit" variant="outline">
             Users
-          </button>
+          </Button>
         </form>
         <form method="POST" action="/signin">
-          <button type="submit" className="w-fit">
+          <Button type="submit" className="w-fit" variant="outline">
             Sign in
-          </button>
+          </Button>
         </form>
         <form method="POST" action="/api/auth/logout">
-          <button type="submit" className="w-fit">
+          <Button type="submit" className="w-fit" variant="outline">
             Sign out
-          </button>
+          </Button>
         </form>
       </div>
     </div>

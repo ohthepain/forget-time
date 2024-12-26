@@ -7,7 +7,7 @@ import {
   github,
   setSessionTokenCookie,
 } from '../../../server/auth';
-import { PrismaClient, OAuthAccount, User } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 interface GitHubUser {
   id: string;
