@@ -3,6 +3,7 @@ import { useStore, ModulationSettings } from '../store';
 import { Slider } from '../components/ui/slider';
 import { HexColorPicker }  from 'react-colorful';
 import { controllerInfo, ControllerId } from './Modulation';
+import './ControlPanel.css';
 
 const hexToRgb = (hex: string) => {
   const bigint = parseInt(hex.slice(1), 16);
@@ -119,6 +120,7 @@ export const OscillatorSettings = ({ oscId }: OscillatorSettingsProps) => {
 			<div className="flex items-center row">
 				<HexColorPicker
 					color={colorString()}
+          className='react-colorful'
           onChange={(color) => {
             const rgb = hexToRgb(color);
             setControllerValue(oscId, ControllerId.R, rgb.r / 255);

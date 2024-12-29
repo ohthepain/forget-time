@@ -148,7 +148,7 @@ const makeProgram2 = (gl: WebGLRenderingContext): WebGLProgram | null => {
   }
 `;
 
-  const fragmentShaderSource2 = `
+const fragmentShaderSource2 = `
   precision mediump float;
   uniform vec3 u_color2;
   uniform float u_freq2;
@@ -187,6 +187,57 @@ const makeProgram2 = (gl: WebGLRenderingContext): WebGLProgram | null => {
   }
   return program2;
 };
+
+const makeProgram3 = (gl: WebGLRenderingContext): WebGLProgram | null => {
+    // Vertex shader source code
+    const vertexShaderSource = `
+    attribute vec4 a_position;
+    void main() {
+      gl_Position = a_position;
+    }
+  `;
+
+  // Fragment shader source code
+  const fragmentShaderSource = `
+    void main() {
+      gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); // Red color
+    }
+  `;
+
+  // Create and compile vertex shader
+  const vertexShader = gl.createShader(gl.VERTEX_SHADER)!;
+  gl.shaderSource(vertexShader, vertexShaderSource);
+  gl.compileShader(vertexShader);
+  if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
+    console.error('Error compiling vertex shader:', gl.getShaderInfoLog(vertexShader));
+    gl.deleteShader(vertexShader);
+    return null;
+  }
+
+  // Create and compile fragment shader
+  const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER)!;
+  gl.shaderSource(fragmentShader, fragmentShaderSource);
+  gl.compileShader(fragmentShader);
+  if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)) {
+    console.error('Error compiling fragment shader:', gl.getShaderInfoLog(fragmentShader));
+    gl.deleteShader(fragmentShader);
+    return null;
+  }
+  // Link shaders into a program
+  const program = gl.createProgram()!;
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    console.error('Error linking program:', gl.getProgramInfoLog(program));
+    gl.deleteProgram(program);
+    return null;
+  }
+
+  // Use the program
+  // gl.useProgram(program);
+  return program;
+}
 
 const makeProgramFinal = (gl: WebGLRenderingContext): WebGLProgram | null => {
   // Final Pass Shader Program
@@ -238,7 +289,7 @@ const makeProgramFinal = (gl: WebGLRenderingContext): WebGLProgram | null => {
   );
   if (!vertexShaderFinal) {
     console.error('Error creating vertex shaderFinal');
-    return;
+    return null;
   }
   const fragmentShaderFinal = createShader(
     gl,
@@ -458,95 +509,95 @@ export const EffectsView = ({
 
       // Draw first program to framebuffer1
       gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer1.framebuffer);
-      gl.useProgram(program1);
-      gl.uniform2f(resolutionLocation1, gl.canvas.width, gl.canvas.height);
-      gl.uniform1f(timeLocation1, time);
+      // gl.useProgram(program1);
+      // gl.uniform2f(resolutionLocation1, gl.canvas.width, gl.canvas.height);
+      // gl.uniform1f(timeLocation1, time);
 
-      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-      gl.clear(gl.COLOR_BUFFER_BIT);
+    //   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+    //   gl.clear(gl.COLOR_BUFFER_BIT);
 
-      let positionLocation = gl.getAttribLocation(program1, 'a_position');
-      gl.enableVertexAttribArray(positionLocation);
-      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-      gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+    //   let positionLocation = gl.getAttribLocation(program1, 'a_position');
+    //   gl.enableVertexAttribArray(positionLocation);
+    //   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    //   gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
-      // Set uniform values from controlSettings
-      const r1 = getControllerValue(0, ControllerId.R);
-      const g1 = getControllerValue(0, ControllerId.G);
-      const b1 = getControllerValue(0, ControllerId.B);
-      gl.uniform3f(color1Location, r1, g1, b1);
-      let controllerValue = getControllerValue(0, ControllerId.Freq);
-      gl.uniform1f(freq1Location, controllerValue);
-      gl.uniform1f(speed1Location, getControllerValue(0, ControllerId.Speed));
-      gl.uniform1f(sharpen1Location, getControllerValue(0, ControllerId.Sharp)); // Set LFO 0 amount to 1
-      gl.uniform2fv(center1Location, [
-        getControllerValue(0, ControllerId.X),
-        getControllerValue(0, ControllerId.Y),
-      ]);
+    //   // Set uniform values from controlSettings
+    //   const r1 = getControllerValue(0, ControllerId.R);
+    //   const g1 = getControllerValue(0, ControllerId.G);
+    //   const b1 = getControllerValue(0, ControllerId.B);
+    //   gl.uniform3f(color1Location, r1, g1, b1);
+    //   let controllerValue = getControllerValue(0, ControllerId.Freq);
+    //   gl.uniform1f(freq1Location, controllerValue);
+    //   gl.uniform1f(speed1Location, getControllerValue(0, ControllerId.Speed));
+    //   gl.uniform1f(sharpen1Location, getControllerValue(0, ControllerId.Sharp)); // Set LFO 0 amount to 1
+    //   gl.uniform2fv(center1Location, [
+    //     getControllerValue(0, ControllerId.X),
+    //     getControllerValue(0, ControllerId.Y),
+    //   ]);
 
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    //   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
-      // Draw second program to framebuffer2
-      gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer2.framebuffer);
-      gl.useProgram(program2);
-      gl.uniform2f(resolutionLocation2, gl.canvas.width, gl.canvas.height);
-      gl.uniform1f(timeLocation2, time);
+    //   // Draw second program to framebuffer2
+    //   gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer2.framebuffer);
+    //   gl.useProgram(program2);
+    //   gl.uniform2f(resolutionLocation2, gl.canvas.width, gl.canvas.height);
+    //   gl.uniform1f(timeLocation2, time);
 
-      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-      gl.clear(gl.COLOR_BUFFER_BIT);
+    //   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+    //   gl.clear(gl.COLOR_BUFFER_BIT);
 
-      positionLocation = gl.getAttribLocation(program2, 'a_position');
-      gl.enableVertexAttribArray(positionLocation);
-      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-      gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+    //   positionLocation = gl.getAttribLocation(program2, 'a_position');
+    //   gl.enableVertexAttribArray(positionLocation);
+    //   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    //   gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
-      // Set uniform values from controlSettings
-      gl.uniform3f(
-        color2Location,
-        getControllerValue(1, ControllerId.R),
-        getControllerValue(1, ControllerId.G),
-        getControllerValue(1, ControllerId.B),
-      );
-      gl.uniform1f(freq2Location, getControllerValue(1, ControllerId.Freq));
-      gl.uniform1f(speed2Location, getControllerValue(1, ControllerId.Speed));
-      gl.uniform1f(sharpen2Location, getControllerValue(1, ControllerId.Sharp));
-      gl.uniform2fv(center2Location, [
-        getControllerValue(1, ControllerId.X),
-        getControllerValue(1, ControllerId.Y),
-      ]);
+    //   // Set uniform values from controlSettings
+    //   gl.uniform3f(
+    //     color2Location,
+    //     getControllerValue(1, ControllerId.R),
+    //     getControllerValue(1, ControllerId.G),
+    //     getControllerValue(1, ControllerId.B),
+    //   );
+    //   gl.uniform1f(freq2Location, getControllerValue(1, ControllerId.Freq));
+    //   gl.uniform1f(speed2Location, getControllerValue(1, ControllerId.Speed));
+    //   gl.uniform1f(sharpen2Location, getControllerValue(1, ControllerId.Sharp));
+    //   gl.uniform2fv(center2Location, [
+    //     getControllerValue(1, ControllerId.X),
+    //     getControllerValue(1, ControllerId.Y),
+    //   ]);
 
-      // updatedCenter = [
-      //     useStore.getState().controllerValues.oscillators[1].controllers[ControllerId.X] + cachedLfoValues[1] * 30,
-      //     useStore.getState().controllerValues.oscillators[1].controllers[ControllerId.Y] + cachedLfoValues[2] * 30
-      // ];
-      // gl.uniform2fv(center2Location, updatedCenter);
+    //   // updatedCenter = [
+    //   //     useStore.getState().controllerValues.oscillators[1].controllers[ControllerId.X] + cachedLfoValues[1] * 30,
+    //   //     useStore.getState().controllerValues.oscillators[1].controllers[ControllerId.Y] + cachedLfoValues[2] * 30
+    //   // ];
+    //   // gl.uniform2fv(center2Location, updatedCenter);
 
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    //   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
-      // Final pass: blend the two textures
-      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-      gl.useProgram(programFinal);
-      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-      gl.clear(gl.COLOR_BUFFER_BIT);
+    //   // Final pass: blend the two textures
+    //   gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    //   gl.useProgram(programFinal);
+    //   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+    //   gl.clear(gl.COLOR_BUFFER_BIT);
 
-      gl.activeTexture(gl.TEXTURE0);
-      gl.bindTexture(gl.TEXTURE_2D, framebuffer1.texture);
-      gl.uniform1i(texture1Location, 0);
+    //   gl.activeTexture(gl.TEXTURE0);
+    //   gl.bindTexture(gl.TEXTURE_2D, framebuffer1.texture);
+    //   gl.uniform1i(texture1Location, 0);
 
-      gl.activeTexture(gl.TEXTURE1);
-      gl.bindTexture(gl.TEXTURE_2D, framebuffer2.texture);
-      gl.uniform1i(texture2Location, 1);
+    //   gl.activeTexture(gl.TEXTURE1);
+    //   gl.bindTexture(gl.TEXTURE_2D, framebuffer2.texture);
+    //   gl.uniform1i(texture2Location, 1);
 
-      positionLocation = gl.getAttribLocation(programFinal, 'a_position');
-      gl.enableVertexAttribArray(positionLocation);
-      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-      gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+    //   positionLocation = gl.getAttribLocation(programFinal, 'a_position');
+    //   gl.enableVertexAttribArray(positionLocation);
+    //   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    //   gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
-      gl.uniform1f(balanceLocation, controlSettingsRef.current.balance);
+    //   gl.uniform1f(balanceLocation, controlSettingsRef.current.balance);
 
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    //   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
-      requestAnimationFrame(render);
+    //   requestAnimationFrame(render);
     }
 
     requestAnimationFrame(render);

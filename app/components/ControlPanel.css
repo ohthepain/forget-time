@@ -1,0 +1,16 @@
+.ControlPanel .react-colorful {
+  height: 20px;
+}
+.ControlPanel .react-colorful__saturation {
+  height: 20px;
+  border-radius: 4px 4px 0 0;
+}
+.ControlPanel .react-colorful__hue {
+  height: 20px;
+  border-radius: 0 0 4px 4px;
+}
+.ControlPanel .react-colorful__hue-pointer {
+  width: 12px;
+  height: inherit;
+  border-radius: 0;
+}

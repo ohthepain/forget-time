@@ -30,10 +30,10 @@ export const App = () => {
 	}, []);
 
 	return (
-		<div className="flex-col w-full h-full bg-pink-50">
-			<div className="relative flex items-center justify-center w-full h-full">
-				<EffectsView controlSettingsParm={patch.controllerValues} />
-        {/* <RawWebGLCanvas /> */}
+		<div className="flex-col w-screen h-screen bg-pink-50">
+			<div className="relative flex items-center justify-center w-full h-full bg-blue-200 ">
+				{/* <EffectsView controlSettingsParm={patch.controllerValues} /> */}
+        <RawWebGLCanvas />
 				{showControls && (
 					<>
 						<ControlPanel />

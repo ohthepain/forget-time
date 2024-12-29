@@ -24,7 +24,7 @@ export class ModulationSettings {
 export class OscillatorSettings {
 	[immerable] = true;
 	type: LfoType;
-	controllers: number[];
+	controllers: number[] = [1, 1, 1];
 	modulationSettings: ModulationSettings[];
 
 	constructor(type: LfoType, controllers: number[]) {
@@ -95,7 +95,7 @@ interface AppState {
 function getDefaultControllerValues(n: number): number[] {
 	const controllerValues = controllerInfo.map((info) => info.defaultValue);
 	if (n === 0) {
-		controllerValues[0] = 0.25;
+		controllerValues[0] = 1; // This should be 0.25 according to the original code
 	}
 	if (n === 1) {
 		controllerValues[ControllerId.X] = 0.75;
